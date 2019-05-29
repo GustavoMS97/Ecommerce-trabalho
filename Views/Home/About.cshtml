@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+@for (var i = 0; i < @ViewBag.clientesLength; i++)
+{
+    <strong>@ViewBag.clientes[i].nome</strong>
+    <p>@ViewBag.clientes[i].CPF</p>
+    <p>@ViewBag.clientes[i].email</p>
+}
