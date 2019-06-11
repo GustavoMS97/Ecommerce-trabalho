@@ -18,14 +18,10 @@ namespace TrabalhoEcommerce.Models
         public string Numero { get; set; }
         [DisplayName("Código de Segurança")]
         public string Ccv { get; set; }
-        [DisplayName("Conta Corrente")]
-        public string Cc { get; set; }
-        [DisplayName("Agência")]
-        public string Ag { get; set; }
         [DisplayName("Data de Vencimento")]
-        [DisplayFormat(DataFormatString = "{yyyy/MM}", ApplyFormatInEditMode = true)]
         public DateTime DataVencimento { get; set; }
         [NotMapped]
+        [DisplayFormat(DataFormatString = "{yyyy/MM}", ApplyFormatInEditMode = true)]
         public string DataVencimentoStr { get; set; }
     }
 }

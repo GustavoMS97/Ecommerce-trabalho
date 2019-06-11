@@ -130,6 +130,7 @@
     <Compile Include="Controllers\CartoesController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +194,8 @@
     <Content Include="Views\Cartoes\Details.cshtml" />
     <Content Include="Views\Cartoes\Edit.cshtml" />
     <Content Include="Views\Cartoes\Index.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Login\Erro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

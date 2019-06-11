@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
@@ -19,10 +19,18 @@
                 </button>
                 @Html.ActionLink("Ecommerce", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="collapse navbar-flex">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Início", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Cadastrar", "Create", "Clientes")</li>
+                    @if (Context.Session["clienteCPF"] == null)
+                    {
+                        <li>@Html.ActionLink("Login", "Login", "Login")</li>
+                        <li>@Html.ActionLink("Cadastrar", "Create", "Clientes")</li>
+                    }
+                    else
+                    {
+                        <li><a>Bem-vindo, @Context.Session["clienteNome"]</a></li>
+                        <li>@Html.ActionLink("Sair", "Sair", "Login")</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -40,3 +48,13 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<style>
+    .navbar-flex {
+        display: flex !important;
+        justify-content: flex-end;
+        height: auto !important;
+        padding-bottom: 0;
+        overflow: visible !important;
+    }
+</style>

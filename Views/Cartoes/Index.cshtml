@@ -7,7 +7,7 @@
 <h2>Cartões</h2>
 
 <p>
-    @Html.ActionLink("Criar novo", "Create", new { teste = 1})
+    @Html.ActionLink("Criar novo", "Create", new { teste = 1 })
 </p>
 <table class="table">
     <tr>
@@ -18,40 +18,29 @@
             @Html.DisplayNameFor(model => model.Ccv)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Cc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ag)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.DataVencimento)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Numero)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ccv)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ag)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataVencimento)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ccv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataVencimento)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Detalhes", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Remover", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
 </table>

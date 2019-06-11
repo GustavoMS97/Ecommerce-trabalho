@@ -53,7 +53,9 @@ namespace TrabalhoEcommerce.Controllers
             {
                 db.Cliente.Add(cliente);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                Session["clienteCPF"] = cliente.CPF;
+                Session["clienteNome"] = cliente.nome;
+                return RedirectToAction("Index", "Home");
             }
 
             return View(cliente);
