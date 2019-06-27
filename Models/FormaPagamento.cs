@@ -12,7 +12,6 @@ namespace TrabalhoEcommerce.Models
     {
         [Key]
         public int ID { get; set; }
-        public Venda Venda { get; set; }
         public Boleto Boleto { get; set; }
         public Cartao Cartao { get; set; }
     }

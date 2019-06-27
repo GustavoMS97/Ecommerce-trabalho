@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrabalhoEcommerce.Models;
 
 namespace TrabalhoEcommerce.Controllers
 {
@@ -28,6 +29,18 @@ namespace TrabalhoEcommerce.Controllers
                 cliente.ToString();
                 Session["clienteCPF"] = cliente.CPF;
                 Session["clienteNome"] = cliente.nome;
+                var carrinho = db.Carrinho.Where(c => c.Cliente.CPF == cliente.CPF && c.StatusCarrinho.ID == 1);
+                if (carrinho != null && carrinho.Any())
+                {
+                    Carrinho carrinhoNovo = carrinho.First();
+                    var carrinhoProduto = db.CarrinhoProduto.Where(c => c.Carrinho.ID == carrinhoNovo.ID);
+                    if (carrinhoProduto != null && carrinhoProduto.Any())
+                    {
+                        List<CarrinhoProduto> cpList = carrinhoProduto.ToList();
+                        int qtd = cpList.Count;
+                        Session["qtdCarrinho"] = qtd;
+                    }
+                }
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception e)

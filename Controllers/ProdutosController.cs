@@ -122,6 +122,7 @@ namespace TrabalhoEcommerce.Controllers
             var CPF = Session["clienteCPF"];
             var cliente = db.Cliente.Find(CPF);
             var produto = db.Produto.Find(id);
+            int qtd;
             try
             {
                 var carrinho = db.Carrinho.Where(c => c.Cliente.CPF == CPF.ToString() && c.StatusCarrinho.ID == 1);
@@ -133,6 +134,14 @@ namespace TrabalhoEcommerce.Controllers
                     {
                         CarrinhoProduto cp = carrinhoProduto.First();
                         cp.Quantidade += 1;
+                        qtd = cp.Quantidade;
+
+                        var carrinhoProduto1 = db.CarrinhoProduto.Where(c => c.Carrinho.ID == carrinhoNovo.ID);
+                        if (carrinhoProduto1 != null && carrinhoProduto1.Any())
+                        {
+                            List<CarrinhoProduto> cpList = carrinhoProduto1.ToList();
+                            qtd = cpList.Count;
+                        }
                     }
                     else
                     {
@@ -140,6 +149,8 @@ namespace TrabalhoEcommerce.Controllers
                         cp.Carrinho = carrinhoNovo;
                         cp.Produto = produto;
                         cp.Quantidade = 1;
+                        qtd = int.Parse(Session["qtdCarrinho"].ToString());
+                        Session["qtdCarrinho"] = qtd += 1;
                         db.CarrinhoProduto.Add(cp);
                     }
                     db.SaveChanges();
@@ -158,9 +169,13 @@ namespace TrabalhoEcommerce.Controllers
                     cp.Carrinho = newCarrinho;
                     cp.Produto = produto;
                     cp.Quantidade = 1;
+                    qtd = 1;
                     db.CarrinhoProduto.Add(cp);
                     db.SaveChanges();
                 }
+
+
+                Session["qtdCarrinho"] = qtd;
             }
             catch (System.Exception ex)
             {

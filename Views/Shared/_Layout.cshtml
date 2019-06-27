@@ -29,6 +29,12 @@
                     else
                     {
                         <li><a>Bem-vindo, @Context.Session["clienteNome"]</a></li>
+                        if (Context.Session["qtdCarrinho"] != null)
+                        {
+                            <li>
+                                @Html.ActionLink("Carrinho (" + Context.Session["qtdCarrinho"] + ")", "Index", "Carrinho")
+                            </li>
+                        }
                         <li>@Html.ActionLink("Sair", "Sair", "Login")</li>
                     }
                 </ul>
