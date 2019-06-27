@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TrabalhoEcommerce.Models.Produto>
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Criar novo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Preco)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            <td class="action-container">
+                @Html.ActionLink("Detalhes", "Details", new { id = item.Codigo })  |
+                @if (Context.Session["clienteCPF"] != null)
+                {
+                    //@Html.Action("Adicionar no carrinho", "AddToCart", new { id = item.Codigo })
+                    <form method="post" action="@Url.Action("AddToCart", "Produtos")">
+                        <input type="hidden" value="@item.Codigo" id="id" name="id" />
+                        <button class="btn-link" type="submit">Adicionar ao carrinho</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<style>
+    .action-container {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+    }
+
+    .btn-link {
+        background: white;
+        border: 0;
+        color: #337ab7;
+    }
+</style>
