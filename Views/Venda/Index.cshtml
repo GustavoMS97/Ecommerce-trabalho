@@ -1,0 +1,137 @@
+﻿@model IEnumerable<TrabalhoEcommerce.Models.CarrinhoProduto>
+
+@{
+    ViewBag.Title = "Finalizar compra";
+}
+
+<h2>Finalizar compra</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Produto
+        </th>
+        <th>
+            Quantidade
+        </th>
+        <th>
+            Total
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                @(string.Format("{0:0,0.00}", item.Quantidade * item.Produto.Preco))
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="flex-container-column">
+    <span>Selecione a forma de pagamento.</span>
+    <form id="meuForm" method="get" action="@Url.Action("TrocaTipoPagamento", "Venda")">
+        <select id="tipoPagamento" name="tipoPagamento" style="margin-top:10px;" onChange="Change(this)">
+            @if (((int)Session["tipoPagamento"]) == 0)
+            {
+                <option value="0" selected="selected">Cartão</option>
+                <option value="1">Boleto</option>
+            }
+            else
+            {
+                <option value="0">Cartão</option>
+                <option value="1" selected="selected">Boleto</option>
+            }
+        </select>
+    </form>
+
+
+    @if (((int)Session["tipoPagamento"]) == 0)
+    {
+        <span>Cartao</span>
+    }
+    else
+    {
+        <div class="flex-container-column" style="margin-top:10px !important;margin-bottom:10px !important;">
+            <strong>Realize o pagamento do boleto descrito abaixo.</strong>
+            <span>@ViewBag.numeroBoleto</span>
+        </div>
+    }
+
+    <div class="payment-value-container">
+        <h4>Valor total: @(string.Format("{0:0,0.00}", ViewBag.valorFinal))</h4>
+    </div>
+    <div class="flex-container-row">
+        <form action="/Carrinho/Index">
+            <button type="submit">Voltar</button>
+        </form>
+        <form method="post" action="@Url.Action("checkout", "Venda")">
+            <input type="hidden" value="@Context.Session["carrinhoId"]" name="carrinho" id="carrinho" />
+            <button type="submit">Finalizar!</button>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function Change(e) {
+        document.getElementById('meuForm').submit();
+        /*
+        $.ajax({
+            url: '/Venda/TrocaTipoPagamento',
+            type: 'GET',
+            data: {
+                'tipoPagamento': e.value
+            },
+            dataType: 'json',
+            success: (data) => {
+                document.getElementById('boleto').style.display = data === 0 ? 'none !important' : 'auto !important';
+                document.getElementById('cartoes').style.display = data === 1 ? 'none !important' : 'auto !important';
+            }
+        });
+        */
+    }
+</script>
+
+
+<style>
+    .flex-container-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .flex-container-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .payment-value-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .action-container {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+    }
+
+    .btn-link {
+        background: white;
+        border: 0;
+        color: #337ab7;
+    }
+</style>

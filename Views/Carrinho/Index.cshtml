@@ -52,9 +52,8 @@
 
 <div class="payment-value-container">
     <h4>Valor total: @(string.Format("{0:0,0.00}", ViewBag.valorFinal))</h4>
-    <form method="post" action="@Url.Action("checkout", "Carrinho")">
-        <input type="hidden" value="@Context.Session["carrinhoId"]" name="carrinho" id="carrinho" />
-        <button type="submit">Finalizar!</button>
+    <form action="/Venda/Index">
+        <button type="submit">Checkout</button>
     </form>
 </div>
 <style>

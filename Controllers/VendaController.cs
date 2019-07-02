@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TrabalhoEcommerce.Models;
-using System.Data;
 
 namespace TrabalhoEcommerce.Controllers
 {
-    public class CarrinhoController : Controller
+    public class VendaController : Controller
     {
         private Contexto db = new Contexto();
 
@@ -43,32 +42,43 @@ namespace TrabalhoEcommerce.Controllers
                         Convert.ToDouble(query.ElementAt(i).CarrinhoProduto.CarrinhoProduto.Quantidade);
 
                 }
+                if(Session["tipoPagamento"] == null)
+                {
+                    Session["tipoPagamento"] = 0;
+                }else
+                {
+                    int tipoPagamento = (int)Session["tipoPagamento"];
+                    if (tipoPagamento == 0)
+                    {
+
+                    }else
+                    {
+                        var chars = "0123456789";
+                        var stringChars = new char[48];
+                        var random = new Random();
+
+                        for (int i = 0; i < stringChars.Length; i++)
+                        {
+                            stringChars[i] = chars[random.Next(chars.Length)];
+                        }
+
+                        var finalString = new String(stringChars);
+                        ViewBag.numeroBoleto = finalString;
+                    }
+                }
                 ViewBag.valorFinal = total;
                 return View(lCp);
             }
+
+            //Buscar tipos de pagamento.
+
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        public ActionResult changeQtd(int value, int id)
+        public ActionResult TrocaTipoPagamento(int tipoPagamento)
         {
-            var carrinhoProduto = db.CarrinhoProduto.Find(id);
-            if (carrinhoProduto != null)
-            {
-                if (value > 0 ||
-                    (carrinhoProduto.Quantidade >= 2))
-                {
-                    carrinhoProduto.Quantidade += value;
-                }
-                else
-                {
-                    db.CarrinhoProduto.Remove(carrinhoProduto);
-                    var qtd = int.Parse(Session["qtdCarrinho"].ToString());
-                    Session["qtdCarrinho"] = qtd -= 1;
-                }
-                db.SaveChanges();
-            }
-            return RedirectToAction("Index", "Carrinho");
+            Session["tipoPagamento"] = tipoPagamento;
+            return RedirectToAction("Index", "Venda");
         }
     }
 }
