@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TrabalhoEcommerce.Models.VendaProduto>
+@using TrabalhoEcommerce.Models
+
+@{
+    ViewBag.Title = "Minhas compras";
+}
+
+<h2>Minhas compras</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Código
+        </th>
+        <th>
+            Data da compra
+        </th>
+        <th>
+            Entregue
+        </th>
+        <th>
+            Remessa
+        </th>
+        <th>
+            Forma de pagamento
+        </th>
+        <th>
+            Estado da compra
+        </th>
+        <th>
+            Total
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Venda.ID)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Venda.DataCompra)
+            </td>
+
+            <td>
+                @if (item.Venda.Entregue)
+                {
+                    <p>Entregue</p>
+                }
+                else
+                {
+                    <p>Encaminhado</p>
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Venda.Remessa)
+            </td>
+
+            <td>
+                @if (item.Venda.FormaPagamento.Cartao != null)
+                {
+                    <p>Cartão: @item.Venda.FormaPagamento.Cartao.Numero</p>
+                }
+                else
+                {
+                    <p>Boleto: @item.Venda.FormaPagamento.Boleto.Codigo</p>
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Venda.StatusPagamento.Status)
+            </td>
+
+            <td>
+                <p>@ViewBag.totalPorVenda[item.Venda.ID]</p>
+            </td>
+            <td>
+                @if (item.Venda.StatusPagamento.ID != 5)
+                {
+                    <form method="POST" action="@Url.Action("retornar", "Venda")">
+                        <input type="hidden" id="id" name="id" value="@item.ID" />
+                        <button type="submit">Devolver</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
