@@ -18,7 +18,16 @@ namespace TrabalhoEcommerce.Controllers
         // GET: Cartoes
         public ActionResult Index()
         {
-            return View(db.Cartao.ToList());
+            var CPF = Session["clienteCPF"];
+            try
+            {
+                var cartoes = db.Cartao.Where(c => c.Cliente.CPF == CPF.ToString()).ToList();
+                return View(cartoes);
+            }
+            catch(Exception e)
+            {
+                return View();
+            }
         }
 
         // GET: Cartoes/Details/5
@@ -47,13 +56,15 @@ namespace TrabalhoEcommerce.Controllers
         // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Numero,Ccv,Cc,Ag,DataVencimentoStr")] Cartao cartao)
+        public ActionResult Create([Bind(Include = "ID,Numero,Ag,DataVencimentoStr")] Cartao cartao)
         {
             if (ModelState.IsValid)
             {
                 DateTime dt = DateTime.ParseExact(cartao.DataVencimentoStr, "yyyy-MM",
                                        System.Globalization.CultureInfo.InvariantCulture);
-
+                var CPF = Session["clienteCPF"];
+                var cliente = db.Cliente.Where(c => c.CPF == CPF.ToString()).First();
+                cartao.Cliente = cliente;
                 cartao.DataVencimento = dt;
                 db.Cartao.Add(cartao);
                 db.SaveChanges();

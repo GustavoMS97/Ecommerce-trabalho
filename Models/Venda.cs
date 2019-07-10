@@ -18,5 +18,6 @@ namespace TrabalhoEcommerce.Models
         public bool Entregue { get; set; }
         public StatusPagamento StatusPagamento { get; set; }
         public string Remessa { get; set; }
+        public FormaPagamento FormaPagamento { get; set; }
     }
 }

@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+<div class="container-flex container-login">
+    <form class="container-flex container-form" method="post" action="@Url.Action("Logar", "Login")">
+        <div class="container-flex" style="        flex-direction: column">
+            <label for="login" class="text-left">Login</label>
+            <input type="email" name="email" placeholder="Email" />
+        </div>
+        <div class="container-flex" style="        flex-direction: column">
+            <label for="password" class="text-left">Senha</label>
+            <input type="password" name="password" placeholder="Senha" />
+        </div>
+        <button type="submit">Logar!</button>
+    </form>
+</div>
+
+<style>
+
+    .container-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-left {
+        align-self: flex-start;
+    }
+
+    .container-login {
+        height: 500px;
+    }
+
+    .container-form {
+        justify-content: space-around !important;
+        flex-direction: column;
+        border: 1px solid lightgrey;
+        height: 250px;
+        width: 300px;
+    }
+</style>

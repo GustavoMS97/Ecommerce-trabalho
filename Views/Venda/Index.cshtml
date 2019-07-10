@@ -1,0 +1,140 @@
+﻿@model IEnumerable<TrabalhoEcommerce.Models.CarrinhoProduto>
+@using TrabalhoEcommerce.Models
+
+@{
+    ViewBag.Title = "Finalizar compra";
+}
+
+<h2>Finalizar compra</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Produto
+        </th>
+        <th>
+            Quantidade
+        </th>
+        <th>
+            Total
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                @(string.Format("{0:0,0.00}", item.Quantidade * item.Produto.Preco))
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="flex-container-column">
+    <div>
+        <span>Selecione a forma de pagamento.</span>
+        <form id="meuForm" method="get" action="@Url.Action("TrocaTipoPagamento", "Venda")">
+            <select id="tipoPagamento" name="tipoPagamento" class="data-width" style="margin-top:10px;" onChange="Change(this)">
+                @if (((int)Session["tipoPagamento"]) == 0)
+                {
+                    <option value="0" selected="selected">Cartão</option>
+                    <option value="1">Boleto</option>
+                }
+                else
+                {
+                    <option value="0">Cartão</option>
+                    <option value="1" selected="selected">Boleto</option>
+                }
+            </select>
+        </form>
+    </div>
+
+    <form method="post" action="@Url.Action("checkout", "Venda")">
+        @if (((int)Session["tipoPagamento"]) == 0)
+        {
+            <div class="flex-container-column" style="margin-top:10px !important;margin-bottom:10px !important;">
+                <strong style="margin-left:70px;">Selecione o cartão que utilizará para o pagamento.</strong>
+                <select id="cartaoId" name="cartaoId" style="margin-top:10px;" class="data-width">
+                    @foreach (var cartao in ((List<Cartao>)Session["cartoes"]))
+                    {
+                        <option value="@cartao.ID">@cartao.Numero</option>
+                    }
+                </select>
+            </div>
+        }
+        else
+        {
+            <div class="flex-container-column" style="margin-top:10px !important;margin-bottom:10px !important;">
+                <strong style="margin-left:50px;">Realize o pagamento do boleto descrito abaixo.</strong>
+                <span style="margin-left:100px;">@ViewBag.numeroBoleto</span>
+                <input type="hidden" name="boleto" id="boleto" value="@ViewBag.numeroBoleto" />
+            </div>
+        }
+
+        <div style="display: flex;flex-direction:column;align-items:center;">
+            <label style="align-self:flex-start;margin-left:70px;" for="remessa">Local de entrega</label>
+            <input type="text" id="remessa" class="data-width" name="remessa" placeholder="Ex: Avenida iguaçu, 3001" />
+        </div>
+
+        <div class="payment-value-container">
+            <h4>Valor total: @(string.Format("{0:0,0.00}", ViewBag.valorFinal))</h4>
+        </div>
+        <div class="flex-container-row">
+            <button type="button" onclick="location.pathname = '/Carrinho/Index'">Voltar</button>
+            <button type="submit">Finalizar!</button>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    function Change(e) {
+        document.getElementById('meuForm').submit();
+    }
+</script>
+
+
+<style>
+    .flex-container-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .flex-container-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .payment-value-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .action-container {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+    }
+
+    .btn-link {
+        background: white;
+        border: 0;
+        color: #337ab7;
+    }
+
+    .data-width {
+        width: 400px;
+    }
+</style>

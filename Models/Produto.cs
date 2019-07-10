@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace TrabalhoEcommerce.Models
 {
-    [Table("Produto")]
-    public class Produto
-    {
-        [Key]
-        public int Codigo { get; set; }
-        public string Nome { get; set; }
-        public double Preco { get; set; }
-    }
+  [Table("Produto")]
+  public class Produto
+  {
+    [Key]
+    public int Codigo { get; set; }
+    public string Nome { get; set; }
+    public double Preco { get; set; }
+  }
 }
